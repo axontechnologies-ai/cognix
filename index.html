@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognix — Axon Technologies</title>
+    <style>
+        /* Сброс и базовые настройки */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0b0d12; /* глубокий тёмный фон */
+            color: #ededf2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ✨ Космос с мерцающими звёздами */
+        .stars, .twinkling, .clouds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .stars {
+            background: #0b0d12 url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48Y2lyY2xlIGN4PSI2IiBjeT0iMTQiIHI9IjEiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjgiIC8+PGNpcmNsZSBjeD0iMTYwIiBjeT0iNjAiIHI9IjEuNSIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjEiIC8+PGNpcmNsZSBjeD0iMjUwIiBjeT0iMjAwIiByPSIxIiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC42IiAvPjxjaXJjbGUgY3g9IjQwIiBjeT0iMjUwIiByPSIxLjIiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjkiIC8+PGNpcmNsZSBjeD0iMjAwIiBjeT0iMTUwIiByPSIxLjgiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjciIC8+PC9zdmc+');
+            background-repeat: repeat;
+            background-size: 300px 300px;
+            animation: starsMove 200s linear infinite;
+            opacity: 0.6;
+        }
+
+        .twinkling {
+            background: transparent url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjQwIiByPSIyIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjgiIC8+PGNpcmNsZSBjeD0iNDAwIiBjeT0iMzAwIiByPSIzIiBmaWxsPSIjZmZmZmZmIiBvcGFjaXR5PSIwLjkiIC8+PC9zdmc+');
+            background-repeat: repeat;
+            background-size: 500px 500px;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes starsMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-300px); }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; }
+            100% { opacity: 0.9; }
+        }
+
+        /* основной контейнер — поверх звёзд */
+        .center-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 800px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        /* заголовок Cognix + Axon */
+        .brand h1 {
+            font-size: 5rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            background: linear-gradient(130deg, #ffffff, #b0c4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            filter: drop-shadow(0 0 20px rgba(70, 130, 255, 0.4));
+        }
+
+        .brand .sub {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #8f9bb5;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: -0.5rem;
+        }
+
+        /* поисковая строка */
+        .search-container {
+            width: 100%;
+            max-width: 650px;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            border: none;
+            border-radius: 60px;
+            background: rgba(22, 26, 35, 0.8);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 15px 35px rgba(0, 10, 30, 0.5), 0 0 0 1px rgba(74, 144, 226, 0.3) inset;
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 20px 40px rgba(0, 30, 70, 0.8), 0 0 0 2px #3b82f6 inset;
+            background: rgba(28, 34, 46, 0.9);
+        }
+
+        .search-box::placeholder {
+            color: #6f7c9f;
+            font-weight: 300;
+            font-size: 1.1rem;
+        }
+
+        /* карусель/всплывающие карточки статей */
+        .cards-section {
+            width: 100%;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .cards-label {
+            font-size: 0.9rem;
+            color: #98a9c9;
+            letter-spacing: 1px;
+            text-align: left;
+            padding-left: 0.5rem;
+        }
+
+        .cards-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            justify-content: center;
+        }
+
+        .article-card {
+            background: rgba(18, 22, 32, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid #2e3a4e;
+            border-radius: 28px;
+            padding: 1.2rem 1.8rem;
+            width: auto;
+            min-width: 180px;
+            flex: 1 0 auto;
+            max-width: 240px;
+            color: #d3def5;
+            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7);
+            transition: transform 0.15s, border-color 0.2s;
+            animation: float 3s ease-in-out infinite;
+            transform-origin: center;
+            text-align: left;
+        }
+
+        /* каждая карточка двигается с разной задержкой */
+        .article-card:nth-child(1) { animation-delay: 0s; }
+        .article-card:nth-child(2) { animation-delay: 0.4s; }
+        .article-card:nth-child(3) { animation-delay: 0.8s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .article-card:hover {
+            border-color: #4d7cff;
+            box-shadow: 0 25px 35px -8px #1e3f8f;
+            transform: scale(1.02) translateY(-4px);
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: white;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-new {
+            background: #3b82f6;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 40px;
+            color: black;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            color: #a3b3d9;
+        }
+
+        /* "вход / тема" по бокам (декоративно) */
+        .top-ui {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            left: 2rem;
+            display: flex;
+            justify-content: space-between;
+            z-index: 30;
+            color: #b5c2e0;
+            font-size: 0.95rem;
+            pointer-events: none;
+        }
+
+        .theme-toggle {
+            background: rgba(20, 26, 38, 0.5);
+            backdrop-filter: blur(6px);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            border: 1px solid #374151;
+            pointer-events: auto;
+            cursor: default; /* просто декор */
+        }
+
+        .login {
+            background: rgba(20, 26, 38, 0.5);
+            backdrop-filter: blur(6px);
+            padding: 0.4rem 1.4rem;
+            border-radius: 30px;
+            border: 1px solid #374151;
+            pointer-events: auto;
+            cursor: default;
+        }
+
+        /* адаптация */
+        @media (max-width: 600px) {
+            .brand h1 { font-size: 3.5rem; }
+            .search-box { font-size: 1rem; padding: 1rem 1.5rem; }
+            .article-card { min-width: 140px; }
+            .top-ui { top: 1rem; right: 1rem; left: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- верхний ui: переключатель темы + логин (просто для стиля) -->
+    <div class="top-ui">
+        <div class="theme-toggle">✦ Тёмная</div>
+        <div class="login">Войти</div>
+    </div>
+
+    <!-- ✨ звёздный слой -->
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <!-- центральный контент -->
+    <div class="center-content">
+        <div class="brand">
+            <h1>Cognix</h1>
+            <div class="sub">by Axon Technologies</div>
+        </div>
+
+        <!-- поиск ровно по середине -->
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Поиск знаний...">
+        </div>
+
+        <!-- всплывающие окна (карточки статей) -->
+        <div class="cards-section">
+            <div class="cards-label">📄 недавно добавленное</div>
+            <div class="cards-row">
+                <div class="article-card">
+                    <div class="card-title">Обновление AxonCore <span class="badge-new">new</span></div>
+                    <div class="card-desc">AxonCore-v1.7 с новыми возможностями!</div>
+                </div>
+                <div class="article-card">
+                    <div class="card-title">Axon T-Core</div>
+                    <div class="card-desc">1 Триллион параметров</div>
+                </div>
+                <div class="article-card">
+                    <div class="card-title">Этика ИИ <span class="badge-new">new</span></div>
+                    <div class="card-desc">Новые протоколы безопасности Axon</div>
+                </div>
+                <div class="article-card">
+                    <div class="card-title">Мы одни?</div>
+                    <div class="card-desc">Теория мультивселенной</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
